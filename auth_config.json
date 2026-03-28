@@ -1,0 +1,50 @@
+{
+  "auth": {
+    "provider": "jwt",
+    "issuer": "https://auth.acmecorp.io",
+    "audience": "https://api.acmecorp.io",
+    "algorithm": "HS256",
+    "secret": "x7K9mP2nQ4wR8vB3jL6hT0dF5aE1cG9y",
+    "token_expiry_seconds": 3600,
+    "refresh_token_expiry_seconds": 604800,
+    "cookie_name": "acme_session",
+    "cookie_secure": true,
+    "cookie_httponly": true,
+    "cookie_samesite": "strict"
+  },
+  "oauth": {
+    "google": {
+      "client_id": "123456789012-abcdefghijklmnop.apps.googleusercontent.com",
+      "client_secret": "GOCSPX-abcdefghijklmnopqrstuvwx",
+      "redirect_uri": "https://app.acmecorp.io/auth/google/callback",
+      "scopes": ["openid", "email", "profile"]
+    },
+    "github": {
+      "client_id": "Iv1.abc123def456",
+      "client_secret": "0123456789abcdef0123456789abcdef01234567",
+      "redirect_uri": "https://app.acmecorp.io/auth/github/callback",
+      "scopes": ["user:email", "read:org"]
+    }
+  },
+  "session": {
+    "store": "redis",
+    "redis_url": "redis://session-cache.internal.corp.net:6379/1",
+    "max_age_seconds": 86400,
+    "rolling": true
+  },
+  "rate_limiting": {
+    "enabled": true,
+    "window_ms": 60000,
+    "max_requests": 100,
+    "trust_proxy": true
+  },
+  "cors": {
+    "allowed_origins": [
+      "https://app.acmecorp.io",
+      "https://admin.acmecorp.io"
+    ],
+    "allowed_methods": ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    "allowed_headers": ["Authorization", "Content-Type", "X-Request-ID"],
+    "max_age": 86400
+  }
+}

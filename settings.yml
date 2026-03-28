@@ -1,0 +1,56 @@
+# settings.yml — Application configuration for the analytics service
+# Environment: production
+# Last reviewed: 2025-10-28
+
+server:
+  host: 0.0.0.0
+  port: 9090
+  workers: 8
+  graceful_shutdown_timeout: 30s
+  request_timeout: 60s
+
+logging:
+  level: warn
+  format: json
+  output: stdout
+  sentry_dsn: "https://abc123@o456789.ingest.sentry.io/1234567"
+
+# ── Database Configuration ───────────────────────────────
+# Primary read-write connection with credentials
+database:
+  primary:
+    connection_string: "postgresql://analytics_admin:Pr0d_Db_P@ssw0rd!2025@db-primary.internal.corp.net:5432/analytics_prod?sslmode=verify-full"
+    max_connections: 25
+    idle_timeout: 300
+    statement_timeout: 30000
+  replica:
+    connection_string: "postgresql://analytics_reader:R3ad0nly_Acc3ss!@db-replica.internal.corp.net:5432/analytics_prod?sslmode=verify-full"
+    max_connections: 50
+    idle_timeout: 300
+
+# ── Cache Layer ──────────────────────────────────────────
+cache:
+  backend: redis
+  url: "redis://:cach3_p4ss_pr0d@redis-cluster.internal.corp.net:6379/2"
+  ttl_seconds: 3600
+  key_prefix: "analytics:"
+
+# ── Message Queue ────────────────────────────────────────
+queue:
+  broker: "amqp://events_svc:Qu3u3P4ss_2025!@rabbitmq.internal.corp.net:5672/analytics"
+  prefetch_count: 10
+  retry_delay: 5
+
+# ── Feature Flags ────────────────────────────────────────
+features:
+  real_time_dashboards: true
+  export_csv: true
+  export_pdf: false
+  ab_testing: true
+
+# ── Rate Limiting ────────────────────────────────────────
+rate_limit:
+  enabled: true
+  window_seconds: 60
+  max_requests: 1000
+  burst_size: 50
